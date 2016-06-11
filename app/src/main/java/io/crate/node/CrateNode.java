@@ -29,6 +29,7 @@ import org.elasticsearch.Version;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.plugin.cloud.aws.CloudAwsPlugin;
+import org.elasticsearch.plugin.cloud.azure.CloudAzurePlugin;
 import org.elasticsearch.plugin.discovery.multicast.MulticastDiscoveryPlugin;
 import org.elasticsearch.plugins.Plugin;
 

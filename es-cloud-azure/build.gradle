@@ -1,0 +1,69 @@
+apply from: "$rootDir/gradle/javaModule.gradle"
+apply plugin: 'idea'
+
+archivesBaseName = 'es-cloud-azure-plugin'
+
+task writePropertiesFile << {
+    def file = new File("${buildDir}/cloud-azure/plugin-descriptor.properties");
+    if(!file.isFile()) {
+        def parentDir = new File(file.parent);
+        if (!parentDir.isDirectory()) {
+            parentDir.mkdirs();
+        }
+        file.createNewFile();
+    }
+    ant.propertyfile(file:file.path, comment:'Plugin Descriptor') {
+        ant.entry(key:'name', value:project.archivesBaseName)
+        ant.entry(key:'description', value:project.description)
+        ant.entry(key:'classname', value:"org.elasticsearch.plugin.cloud.azure.CloudAzurePlugin")
+        ant.entry(key:'version', value:"0.1.0")
+        ant.entry(key:'elasticsearch.version', value: versions.elasticsearch)
+        ant.entry(key:'java.version', value:"1.7")
+        ant.entry(key:'jvm', value:true)
+    }
+}
+
+task jarAndProperties (dependsOn: [jar, writePropertiesFile]) {
+    doLast {
+
+        mkdir("${buildDir}/libs/azure-libs")
+    }
+
+}
+
+dependencies {
+    compileOnly(project(':es'))
+    compileOnly('com.microsoft.azure:azure-storage:4.3.0')
+    compileOnly('com.microsoft.azure:azure-mgmt-utility:0.9.3') {
+        exclude group: 'stax', module: 'stax-api'
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+        exclude group: 'javax.mail', module: 'mail'
+    }
+    compile('javax.mail:mail:1.4.7')
+}
+
+def pluginDir = project(":es").file('upstream/plugins/cloud-azure')
+
+sourceSets {
+    main {
+        java {
+            srcDir "$pluginDir/src/main/java"
+        }
+        output.resourcesDir = null
+    }
+    test {
+        output.resourcesDir = null
+        output.classesDir = null
+    }
+}
+
+test {
+    enabled = false
+}
+
+idea {
+    module {
+        contentRoot = pluginDir
+        excludeDirs += files('build','src/test')
+    }
+}
