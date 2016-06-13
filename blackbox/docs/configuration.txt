@@ -917,8 +917,8 @@ would result in a list of discovery nodes ordered like::
 
 .. _conf_ec2_discovery:
 
-Discovery via EC2
-*****************
+Discovery on Amazon EC2
+***********************
 
 Crate has built-in support for discovery via the EC2 API. To enable EC2
 discovery the ``discovery.type`` setting needs to be set to ``ec2``.
@@ -993,6 +993,47 @@ Following settings control the discovery:
 
   If you have your own compatible implementation of the EC2 API service you can
   set the enpoint that should be used.
+
+.. _conf_azure_discovery:
+
+Discovery on Microsoft Azure
+****************************
+
+Crate has built-in support for discovery via the Azure Virtual Machine API.
+To enable Azure discovery set the ``discovery.type`` setting to ``azure``.
+
+**cloud.azure.management.resourcegroup.name**
+  | *Runtime:*  ``no``
+
+    the azure resource group name
+
+**cloud.azure.management.subscription.id**
+  | *Runtime:*  ``no``
+
+    the azure subscription id
+
+**cloud.azure.management.tenant.id**
+  | *Runtime:*  ``no``
+
+    the azure tenant id
+
+**cloud.azure.management.app.id**
+  | *Runtime:*  ``no``
+
+    the azure active directory application id
+
+**cloud.azure.management.app.secret**
+  | *Runtime:*  ``no``
+
+    the password for the azure active directory application
+
+**discovery.azure.method**
+  | *Runtime:* ``no``
+  | *Default:* ``vnet``
+  | *Allowed Values:* ``vnet | subnet``
+
+     Discovery method ``vnet`` will discover all VMs in the same virtual network.
+The use of method ``subnet`` will add all virtual machines in the same subnet to the cluster.
 
 
 .. _conf_routing:
