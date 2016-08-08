@@ -132,6 +132,7 @@ public class RemoteCollectorFactory {
             normalizer,
             new ShardId(index, shardId));
 
+        // Interesting
         return new RemoteCollector(
             childJobId,
             localNodeId,

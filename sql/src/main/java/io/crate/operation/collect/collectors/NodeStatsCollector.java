@@ -39,7 +39,6 @@ import io.crate.operation.reference.sys.node.NodeStatsContext;
 import io.crate.planner.node.dql.RoutedCollectPhase;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.cluster.node.DiscoveryNode;
-import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.transport.ReceiveTimeoutTransportException;
 
@@ -52,7 +51,7 @@ public class NodeStatsCollector implements CrateCollector {
     private final TransportNodeStatsAction transportStatTablesAction;
     private final RowReceiver rowReceiver;
     private final RoutedCollectPhase collectPhase;
-    private final DiscoveryNodes nodes;
+    private final List<DiscoveryNode> nodes;
     private final CollectInputSymbolVisitor<RowCollectExpression<?, ?>> inputSymbolVisitor;
     private final TopLevelColumnIdentVisitor topLevelColumnIdentVisitor = TopLevelColumnIdentVisitor.INSTANCE;
     private final AtomicInteger remainingRequests = new AtomicInteger();
@@ -60,7 +59,7 @@ public class NodeStatsCollector implements CrateCollector {
     public NodeStatsCollector(TransportNodeStatsAction transportStatTablesAction,
                               RowReceiver rowReceiver,
                               RoutedCollectPhase collectPhase,
-                              DiscoveryNodes nodes,
+                              List<DiscoveryNode> nodes,
                               CollectInputSymbolVisitor<RowCollectExpression<?, ?>> inputSymbolVisitor) {
         this.transportStatTablesAction = transportStatTablesAction;
         this.rowReceiver = rowReceiver;
@@ -71,6 +70,7 @@ public class NodeStatsCollector implements CrateCollector {
 
     @Override
     public void doCollect() {
+        System.out.println(">>>>>>> Remaining Requests: "+nodes.size());
         remainingRequests.set(nodes.size());
         final List<NodeStatsContext> rows = Collections.synchronizedList(new ArrayList<NodeStatsContext>());
         for (final DiscoveryNode node : nodes) {
@@ -80,6 +80,7 @@ public class NodeStatsCollector implements CrateCollector {
             transportStatTablesAction.execute(node.id(), request, new ActionListener<NodeStatsResponse>() {
                 @Override
                 public void onResponse(NodeStatsResponse response) {
+                    System.out.println(">>>>>>>>>> onSuccess");
                     rows.add(response.nodeStatsContext());
                     if (remainingRequests.decrementAndGet() == 0) {
                         emmitRows(rows);
@@ -88,6 +89,7 @@ public class NodeStatsCollector implements CrateCollector {
 
                 @Override
                 public void onFailure(Throwable t) {
+                    System.out.println(">>>>>>>>> onFailure");
                     if (t instanceof ReceiveTimeoutTransportException) {
                         rows.add(new NodeStatsContext(node.id(), node.name()));
                         if (remainingRequests.decrementAndGet() == 0) {

@@ -117,6 +117,7 @@ public class WhereClauseAnalyzer {
     @Nullable
     private Set<Symbol> getClusteredByLiterals(WhereClause whereClause, EqualityExtractor ee, StmtCtx stmtCtx) {
         if (tableInfo.clusteredBy() != null) {
+            // TODO: this is interesting
             List<List<Symbol>> clusteredValues = ee.extractParentMatches(
                 ImmutableList.of(tableInfo.clusteredBy()),
                 whereClause.query(), stmtCtx);
