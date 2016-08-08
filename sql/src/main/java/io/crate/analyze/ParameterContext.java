@@ -22,6 +22,7 @@
 package io.crate.analyze;
 
 import io.crate.action.sql.SQLOperations;
+import io.crate.core.collections.Row;
 import io.crate.types.DataType;
 import io.crate.types.DataTypes;
 
@@ -43,13 +44,13 @@ public class ParameterContext {
     private final String defaultSchema;
 
     private final Set<SQLOperations.Option> options;
-    private final Parameters parameters;
-    private final List<Parameters> bulkParameters;
+    private final Row parameters;
+    private final List<Row> bulkParameters;
 
     private int currentIdx = 0;
 
 
-    public ParameterContext(Parameters parameters, List<Parameters> bulkParameters,
+    public ParameterContext(Row parameters, List<Row> bulkParameters,
                             @Nullable String defaultSchema, Set<SQLOperations.Option> options) {
         this.parameters = parameters;
         this.defaultSchema = defaultSchema;
@@ -60,7 +61,7 @@ public class ParameterContext {
         this.bulkParameters = bulkParameters;
     }
 
-    public ParameterContext(Parameters parameters, List<Parameters> bulkParameters, @Nullable String defaultSchema) {
+    public ParameterContext(Row parameters, List<Row> bulkParameters, @Nullable String defaultSchema) {
         this(parameters, bulkParameters, defaultSchema, SQLOperations.Option.NONE);
     }
 
@@ -73,9 +74,9 @@ public class ParameterContext {
         return defaultSchema;
     }
 
-    private void validateBulkParams(List<Parameters> bulkParams) {
+    private void validateBulkParams(List<Row> bulkParams) {
         int length = bulkParams.get(0).size();
-        for (Parameters bulkParam : bulkParams) {
+        for (Row bulkParam : bulkParams) {
             if (bulkParam.size() != length) {
                 throw new IllegalArgumentException("mixed number of arguments inside bulk arguments");
             }
@@ -103,7 +104,7 @@ public class ParameterContext {
         this.currentIdx = i;
     }
 
-    public Parameters parameters() {
+    public Row parameters() {
         if (hasBulkParams()) {
             return bulkParameters.get(currentIdx);
         }

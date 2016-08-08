@@ -35,6 +35,7 @@ import io.crate.analyze.symbol.Field;
 import io.crate.analyze.symbol.Symbols;
 import io.crate.concurrent.CompletionListener;
 import io.crate.core.collections.Row;
+import io.crate.core.collections.RowN;
 import io.crate.exceptions.Exceptions;
 import io.crate.exceptions.ReadOnlyException;
 import io.crate.executor.Executor;
@@ -128,7 +129,7 @@ public class SimplePortal extends AbstractPortal {
         this.resultFormatCodes = resultFormatCodes;
         if (analysis == null) {
             analysis = sessionData.getAnalyzer().analyze(statement,
-                new ParameterContext(new Parameters(params),
+                new ParameterContext(new RowN(params.toArray()),
                     Parameters.EMPTY_BULK,
                     sessionData.getDefaultSchema(),
                     sessionData.options()));
@@ -285,7 +286,7 @@ public class SimplePortal extends AbstractPortal {
                         LOGGER.debug("Killed {} jobs before Retry", killResponse.numKilled());
 
                         Analysis analysis = analyzer.analyze(portal.statement,
-                            new ParameterContext(new Parameters(portal.params), Parameters.EMPTY_BULK, defaultSchema, options));
+                            new ParameterContext(new RowN(portal.params.toArray()), Parameters.EMPTY_BULK, defaultSchema, options));
                         Plan plan = planner.plan(analysis, jobId, 0, portal.maxRows);
                         executor.execute(plan, portal.rowReceiver);
                     }

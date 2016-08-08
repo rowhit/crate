@@ -21,7 +21,7 @@
 
 package io.crate.analyze.expressions;
 
-import io.crate.analyze.Parameters;
+import io.crate.core.collections.Row;
 import io.crate.sql.tree.*;
 import org.elasticsearch.ElasticsearchParseException;
 import org.elasticsearch.common.unit.ByteSizeValue;
@@ -35,15 +35,15 @@ public class ExpressionToMemoryValueVisitor {
 
     private ExpressionToMemoryValueVisitor() {}
 
-    public static ByteSizeValue convert(Node node, Parameters parameters, String settingName) {
+    public static ByteSizeValue convert(Node node, Row parameters, String settingName) {
         return VISITOR.process(node, new Context(settingName, parameters));
     }
 
     private static class Context {
         private final String settingName;
-        private final Parameters params;
+        private final Row params;
 
-        public Context(String settingName, Parameters params) {
+        public Context(String settingName, Row params) {
             this.settingName = settingName;
             this.params = params;
         }

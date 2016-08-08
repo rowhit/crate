@@ -31,6 +31,7 @@ import io.crate.analyze.symbol.Field;
 import io.crate.analyze.symbol.Literal;
 import io.crate.analyze.symbol.Symbol;
 import io.crate.analyze.symbol.SymbolType;
+import io.crate.core.collections.RowN;
 import io.crate.metadata.*;
 import io.crate.metadata.table.Operation;
 import io.crate.metadata.table.SchemaInfo;
@@ -136,7 +137,7 @@ public class CompoundLiteralTest extends CrateUnitTest {
     private Symbol analyzeExpression(String expression, Object[] params) {
         ExpressionAnalyzer expressionAnalyzer = new ExpressionAnalyzer(
                 analysisMetaData,
-                new ParameterContext(new Parameters(params), Parameters.EMPTY_BULK, null),
+                new ParameterContext(new RowN(params), Parameters.EMPTY_BULK, null),
                 new FullQualifedNameFieldProvider(
                         ImmutableMap.<QualifiedName, AnalyzedRelation>of(
                             new QualifiedName("dummy"), new DummyRelation()

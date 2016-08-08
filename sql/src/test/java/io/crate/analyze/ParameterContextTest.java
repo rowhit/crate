@@ -22,15 +22,17 @@
 
 package io.crate.analyze;
 
+import io.crate.core.collections.Row;
+import io.crate.core.collections.RowN;
 import io.crate.test.integration.CrateUnitTest;
 import io.crate.types.ArrayType;
 import io.crate.types.DataTypes;
 import org.apache.lucene.util.BytesRef;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
+import static com.carrotsearch.randomizedtesting.RandomizedTest.$;
 import static io.crate.testing.TestingHelpers.isLiteral;
 import static org.hamcrest.Matchers.is;
 
@@ -46,7 +48,7 @@ public class ParameterContextTest extends CrateUnitTest {
 
     @Test
     public void testArgs() throws Exception {
-        Parameters args = new Parameters(Arrays.asList( true, 1, null, "string" ));
+        Row args = new RowN($(true, 1, null, "string" ));
         ParameterContext ctx = new ParameterContext(args, Parameters.EMPTY_BULK, null);
         assertFalse(ctx.hasBulkParams());
         assertThat(ctx.parameters(), is(args));

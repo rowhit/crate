@@ -24,6 +24,7 @@ package io.crate.analyze;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import io.crate.analyze.repositories.RepositorySettingsModule;
+import io.crate.core.collections.RowN;
 import io.crate.core.collections.TreeMapBuilder;
 import io.crate.metadata.*;
 import io.crate.metadata.table.ColumnPolicy;
@@ -233,7 +234,7 @@ public abstract class BaseAnalyzerTest extends CrateUnitTest {
 
     protected Analysis analysis(String statement, Object [] params) {
         return analyzer.analyze(SqlParser.createStatement(statement),
-                new ParameterContext(new Parameters(Arrays.asList(params)), Parameters.EMPTY_BULK, Schemas.DEFAULT_SCHEMA_NAME));
+                new ParameterContext(new RowN(params), Parameters.EMPTY_BULK, Schemas.DEFAULT_SCHEMA_NAME));
     }
 
     protected List<Module> getModules() {

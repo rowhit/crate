@@ -22,6 +22,7 @@
 
 package io.crate.analyze;
 
+import io.crate.core.collections.RowN;
 import io.crate.metadata.Schemas;
 import io.crate.sql.ExpressionFormatter;
 import io.crate.sql.parser.SqlParser;
@@ -70,7 +71,7 @@ public class ShowStatementAnalyzer {
         sb.append("ORDER BY schema_name");
 
         Analysis newAnalysis = analyzer.analyze(SqlParser.createStatement(sb.toString()),
-                new ParameterContext(new Parameters(params), Parameters.EMPTY_BULK, null));
+                new ParameterContext(new RowN(params.toArray(new Object[0])), Parameters.EMPTY_BULK, null));
         analysis.rootRelation(newAnalysis.rootRelation());
         return newAnalysis.analyzedStatement();
     }
@@ -112,7 +113,7 @@ public class ShowStatementAnalyzer {
         sb.append("ORDER BY column_name");
 
         Analysis newAnalysis = analyzer.analyze(SqlParser.createStatement(sb.toString()),
-                new ParameterContext(new Parameters(params), Parameters.EMPTY_BULK, null));
+                new ParameterContext(new RowN(params.toArray()), Parameters.EMPTY_BULK, null));
         analysis.rootRelation(newAnalysis.rootRelation());
         return newAnalysis.analyzedStatement();
     }
@@ -159,7 +160,7 @@ public class ShowStatementAnalyzer {
         sb.append(" ORDER BY 1");
 
         Analysis newAnalysis = analyzer.analyze(SqlParser.createStatement(sb.toString()),
-                new ParameterContext(new Parameters(params), Parameters.EMPTY_BULK, null));
+                new ParameterContext(new RowN(params.toArray()), Parameters.EMPTY_BULK, null));
         analysis.rootRelation(newAnalysis.rootRelation());
         return newAnalysis.analyzedStatement();
     }

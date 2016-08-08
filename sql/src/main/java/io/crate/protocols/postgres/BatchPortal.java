@@ -32,6 +32,8 @@ import io.crate.analyze.symbol.Field;
 import io.crate.analyze.symbol.Symbols;
 import io.crate.concurrent.CompletionListener;
 import io.crate.concurrent.CompletionState;
+import io.crate.core.collections.Row;
+import io.crate.core.collections.RowN;
 import io.crate.exceptions.Exceptions;
 import io.crate.exceptions.ReadOnlyException;
 import io.crate.operation.collect.StatsTables;
@@ -100,7 +102,7 @@ class BatchPortal extends AbstractPortal {
         batchParams.add(params);
         this.resultFormatCodes.add(resultFormatCodes);
         analysis.add(sessionData.getAnalyzer().analyze(statement,
-            new ParameterContext(new Parameters(getArgs()),
+            new ParameterContext(getArgs(),
                 Collections.singletonList(Parameters.EMPTY),
                 sessionData.getDefaultSchema(),
                 sessionData.options())));
@@ -146,8 +148,8 @@ class BatchPortal extends AbstractPortal {
         }
     }
 
-    private List<Object> getArgs() {
-        return batchParams.get(batchParams.size() - 1);
+    private Row getArgs() {
+        return new RowN(batchParams.get(batchParams.size() - 1).toArray());
     }
 
     private void validate(Analysis analysis) {

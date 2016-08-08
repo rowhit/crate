@@ -21,6 +21,7 @@
 
 package io.crate.analyze;
 
+import io.crate.core.collections.Row;
 import io.crate.sql.tree.AstVisitor;
 import io.crate.sql.tree.Node;
 import io.crate.sql.tree.ParameterExpression;
@@ -30,22 +31,22 @@ import org.apache.lucene.util.BytesRef;
 import javax.annotation.Nullable;
 import java.util.Locale;
 
-public class SafeExpressionToStringVisitor extends AstVisitor<String, Parameters> {
+public class SafeExpressionToStringVisitor extends AstVisitor<String, Row> {
 
     private final static SafeExpressionToStringVisitor INSTANCE = new SafeExpressionToStringVisitor();
     private SafeExpressionToStringVisitor() {}
 
-    public static String convert(Node node, @Nullable Parameters context) {
+    public static String convert(Node node, @Nullable Row context) {
         return INSTANCE.process(node, context);
     }
 
     @Override
-    protected String visitStringLiteral(StringLiteral node, Parameters parameters) {
+    protected String visitStringLiteral(StringLiteral node, Row parameters) {
         return node.getValue();
     }
 
     @Override
-    public String visitParameterExpression(ParameterExpression node, Parameters parameters) {
+    public String visitParameterExpression(ParameterExpression node, Row parameters) {
         Object value = parameters.get(node.index());
         if (value instanceof BytesRef) {
             return ((BytesRef) value).utf8ToString();
@@ -57,7 +58,7 @@ public class SafeExpressionToStringVisitor extends AstVisitor<String, Parameters
     }
 
     @Override
-    protected String visitNode(Node node, Parameters context) {
+    protected String visitNode(Node node, Row context) {
         throw new IllegalArgumentException(String.format(Locale.ENGLISH, "Can't handle %s.", node));
     }
 }

@@ -31,6 +31,7 @@ import io.crate.analyze.ParameterContext;
 import io.crate.analyze.Parameters;
 import io.crate.analyze.symbol.Field;
 import io.crate.concurrent.CompletionListener;
+import io.crate.core.collections.Row;
 import io.crate.exceptions.Exceptions;
 import io.crate.exceptions.UnsupportedFeatureException;
 import io.crate.executor.Executor;
@@ -114,7 +115,7 @@ class BulkPortal extends AbstractPortal {
 
     @Override
     public void sync(Planner planner, StatsTables statsTables, CompletionListener listener) {
-        List<Parameters> bulkParams = Parameters.toBulkParams(bulkArgs);
+        List<Row> bulkParams = Parameters.toBulkParams(bulkArgs);
         Analysis analysis = sessionData.getAnalyzer().analyze(statement,
             new ParameterContext(
                 Parameters.EMPTY,

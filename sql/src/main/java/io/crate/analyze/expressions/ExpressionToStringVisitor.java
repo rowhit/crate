@@ -21,7 +21,7 @@
 
 package io.crate.analyze.expressions;
 
-import io.crate.analyze.Parameters;
+import io.crate.core.collections.Row;
 import io.crate.sql.ExpressionFormatter;
 import io.crate.sql.tree.*;
 import org.elasticsearch.common.lucene.BytesRefs;
@@ -29,72 +29,72 @@ import org.elasticsearch.common.lucene.BytesRefs;
 import javax.annotation.Nullable;
 import java.util.Locale;
 
-public class ExpressionToStringVisitor extends AstVisitor<String, Parameters> {
+public class ExpressionToStringVisitor extends AstVisitor<String, Row> {
 
     private final static ExpressionToStringVisitor INSTANCE = new ExpressionToStringVisitor();
     private ExpressionToStringVisitor() {}
 
-    public static String convert(Node node, @Nullable Parameters context) {
+    public static String convert(Node node, @Nullable Row context) {
         return INSTANCE.process(node, context);
     }
 
     @Override
-    protected String visitQualifiedNameReference(QualifiedNameReference node, Parameters parameters) {
+    protected String visitQualifiedNameReference(QualifiedNameReference node, Row parameters) {
         return node.getName().toString();
     }
 
     @Override
-    protected String visitStringLiteral(StringLiteral node, Parameters parameters) {
+    protected String visitStringLiteral(StringLiteral node, Row parameters) {
         return node.getValue();
     }
 
     @Override
-    protected String visitBooleanLiteral(BooleanLiteral node, Parameters parameters) {
+    protected String visitBooleanLiteral(BooleanLiteral node, Row parameters) {
         return Boolean.toString(node.getValue());
     }
 
     @Override
-    protected String visitDoubleLiteral(DoubleLiteral node, Parameters parameters) {
+    protected String visitDoubleLiteral(DoubleLiteral node, Row parameters) {
         return Double.toString(node.getValue());
     }
 
     @Override
-    protected String visitLongLiteral(LongLiteral node, Parameters parameters) {
+    protected String visitLongLiteral(LongLiteral node, Row parameters) {
         return Long.toString(node.getValue());
     }
 
     @Override
-    public String visitArrayLiteral(ArrayLiteral node, Parameters context) {
+    public String visitArrayLiteral(ArrayLiteral node, Row context) {
         return ExpressionFormatter.formatExpression(node);
     }
 
     @Override
-    public String visitObjectLiteral(ObjectLiteral node, Parameters context) {
+    public String visitObjectLiteral(ObjectLiteral node, Row context) {
         return ExpressionFormatter.formatExpression(node);
     }
 
     @Override
-    public String visitParameterExpression(ParameterExpression node, Parameters parameters) {
+    public String visitParameterExpression(ParameterExpression node, Row parameters) {
         return BytesRefs.toString(parameters.get(node.index()));
     }
 
     @Override
-    protected String visitNegativeExpression(NegativeExpression node, Parameters context) {
+    protected String visitNegativeExpression(NegativeExpression node, Row context) {
         return "-" + process(node.getValue(), context);
     }
 
     @Override
-    protected String visitSubscriptExpression(SubscriptExpression node, Parameters context) {
+    protected String visitSubscriptExpression(SubscriptExpression node, Row context) {
         return String.format(Locale.ENGLISH, "%s.%s", process(node.name(), context), process(node.index(), context));
     }
 
     @Override
-    protected String visitNullLiteral(NullLiteral node, Parameters context) {
+    protected String visitNullLiteral(NullLiteral node, Row context) {
         return null;
     }
 
     @Override
-    protected String visitNode(Node node, Parameters context) {
+    protected String visitNode(Node node, Row context) {
         throw new UnsupportedOperationException(String.format(Locale.ENGLISH, "Can't handle %s.", node));
     }
 }

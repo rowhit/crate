@@ -22,12 +22,12 @@
 
 package io.crate.metadata.settings;
 
-import io.crate.analyze.Parameters;
+import io.crate.core.collections.Row;
 import io.crate.sql.tree.Expression;
 import org.elasticsearch.common.settings.Settings;
 
 public interface SettingsApplier {
-    void apply(Settings.Builder settingsBuilder, Parameters parameters, Expression expression);
+    void apply(Settings.Builder settingsBuilder, Row parameters, Expression expression);
 
     void applyValue(Settings.Builder settingsBuilder, Object value);
 

@@ -26,6 +26,7 @@ import com.google.common.collect.ImmutableMap;
 import io.crate.analyze.*;
 import io.crate.analyze.relations.DocTableRelation;
 import io.crate.analyze.repositories.RepositorySettingsModule;
+import io.crate.core.collections.RowN;
 import io.crate.core.collections.TreeMapBuilder;
 import io.crate.metadata.*;
 import io.crate.metadata.doc.DocSchemaInfo;
@@ -241,7 +242,7 @@ public class WhereClauseAnalyzerTest extends CrateUnitTest {
 
     private WhereClause analyzeSelect(String stmt, Object... args) {
         SelectAnalyzedStatement statement = (SelectAnalyzedStatement) analyzer.analyze(SqlParser.createStatement(stmt),
-                new ParameterContext(new Parameters(Arrays.asList(args)), Parameters.EMPTY_BULK, Schemas.DEFAULT_SCHEMA_NAME)).analyzedStatement();
+                new ParameterContext(new RowN(args), Parameters.EMPTY_BULK, Schemas.DEFAULT_SCHEMA_NAME)).analyzedStatement();
         return statement.relation().querySpec().where();
     }
 
