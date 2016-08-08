@@ -26,6 +26,7 @@ import com.google.common.collect.ImmutableMap;
 import io.crate.action.sql.SQLOperations;
 import io.crate.analyze.AnalysisMetaData;
 import io.crate.analyze.ParameterContext;
+import io.crate.analyze.Parameters;
 import io.crate.analyze.relations.AnalyzedRelation;
 import io.crate.analyze.relations.AnalyzedRelationVisitor;
 import io.crate.analyze.relations.FullQualifedNameFieldProvider;
@@ -70,7 +71,7 @@ public class ExpressionAnalyzerTest extends CrateUnitTest {
     @Before
     public void prepare() throws Exception {
         mockedAnalysisMetaData = mock(AnalysisMetaData.class);
-        emptyParameterContext = new ParameterContext(new Object[0], new Object[0][], null);
+        emptyParameterContext = ParameterContext.EMPTY;
         dummySources = ImmutableMap.of(new QualifiedName("foo"), (AnalyzedRelation) new DummyRelation());
         context = new ExpressionAnalysisContext(new StmtCtx());
 
@@ -111,7 +112,8 @@ public class ExpressionAnalyzerTest extends CrateUnitTest {
     public void testQuotedSubscriptExpression() throws Exception {
         ExpressionAnalyzer expressionAnalyzer = new ExpressionAnalyzer(
                 mockedAnalysisMetaData,
-                new ParameterContext(new Object[0], new Object[0][], null, EnumSet.of(SQLOperations.Option.ALLOW_QUOTED_SUBSCRIPT)),
+                new ParameterContext(Parameters.EMPTY, Parameters.EMPTY_BULK,
+                    null, EnumSet.of(SQLOperations.Option.ALLOW_QUOTED_SUBSCRIPT)),
                 new FullQualifedNameFieldProvider(dummySources),
                 null);
         ExpressionAnalysisContext expressionAnalysisContext = new ExpressionAnalysisContext(new StmtCtx());

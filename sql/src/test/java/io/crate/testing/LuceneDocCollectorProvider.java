@@ -27,6 +27,7 @@ import io.crate.action.job.SharedShardContexts;
 import io.crate.analyze.Analysis;
 import io.crate.analyze.Analyzer;
 import io.crate.analyze.ParameterContext;
+import io.crate.analyze.Parameters;
 import io.crate.analyze.relations.PlannedAnalyzedRelation;
 import io.crate.breaker.RamAccountingContext;
 import io.crate.jobs.JobContextService;
@@ -49,6 +50,7 @@ import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.test.InternalTestCluster;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -92,7 +94,8 @@ public class LuceneDocCollectorProvider implements AutoCloseable {
 
     public CrateCollector createCollector(String statement, final RowReceiver downstream, Integer nodePageSizeHint, Object... args) throws Exception {
         Analysis analysis = analyzer.analyze(
-            SqlParser.createStatement(statement), new ParameterContext(args, new Object[0][], null));
+            SqlParser.createStatement(statement), new ParameterContext(
+                new Parameters(Arrays.asList(args)), Parameters.EMPTY_BULK, null));
         PlannedAnalyzedRelation plannedAnalyzedRelation = queryAndFetchConsumer.consume(
             analysis.rootRelation(),
             new ConsumerContext(analysis.rootRelation(), new Planner.Context(cluster.clusterService(), UUID.randomUUID(), null, new StmtCtx(), 0, 0)));

@@ -25,7 +25,9 @@ package io.crate.analyze;
 import io.crate.metadata.Schemas;
 import io.crate.sql.ExpressionFormatter;
 import io.crate.sql.parser.SqlParser;
-import io.crate.sql.tree.*;
+import io.crate.sql.tree.ShowColumns;
+import io.crate.sql.tree.ShowSchemas;
+import io.crate.sql.tree.ShowTables;
 import org.elasticsearch.common.inject.Singleton;
 
 import java.util.ArrayList;
@@ -68,7 +70,7 @@ public class ShowStatementAnalyzer {
         sb.append("ORDER BY schema_name");
 
         Analysis newAnalysis = analyzer.analyze(SqlParser.createStatement(sb.toString()),
-                new ParameterContext(params.toArray(), new Object[0][], null));
+                new ParameterContext(new Parameters(params), Parameters.EMPTY_BULK, null));
         analysis.rootRelation(newAnalysis.rootRelation());
         return newAnalysis.analyzedStatement();
     }
@@ -110,7 +112,7 @@ public class ShowStatementAnalyzer {
         sb.append("ORDER BY column_name");
 
         Analysis newAnalysis = analyzer.analyze(SqlParser.createStatement(sb.toString()),
-                new ParameterContext(params.toArray(), new Object[0][], null));
+                new ParameterContext(new Parameters(params), Parameters.EMPTY_BULK, null));
         analysis.rootRelation(newAnalysis.rootRelation());
         return newAnalysis.analyzedStatement();
     }
@@ -157,7 +159,7 @@ public class ShowStatementAnalyzer {
         sb.append(" ORDER BY 1");
 
         Analysis newAnalysis = analyzer.analyze(SqlParser.createStatement(sb.toString()),
-                new ParameterContext(params.toArray(), new Object[0][], null));
+                new ParameterContext(new Parameters(params), Parameters.EMPTY_BULK, null));
         analysis.rootRelation(newAnalysis.rootRelation());
         return newAnalysis.analyzedStatement();
     }

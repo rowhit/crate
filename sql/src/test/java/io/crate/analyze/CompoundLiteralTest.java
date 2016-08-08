@@ -136,7 +136,7 @@ public class CompoundLiteralTest extends CrateUnitTest {
     private Symbol analyzeExpression(String expression, Object[] params) {
         ExpressionAnalyzer expressionAnalyzer = new ExpressionAnalyzer(
                 analysisMetaData,
-                new ParameterContext(params, new Object[0][], null),
+                new ParameterContext(new Parameters(params), Parameters.EMPTY_BULK, null),
                 new FullQualifedNameFieldProvider(
                         ImmutableMap.<QualifiedName, AnalyzedRelation>of(
                             new QualifiedName("dummy"), new DummyRelation()

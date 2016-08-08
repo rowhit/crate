@@ -38,7 +38,7 @@ public abstract class MappingsApplier {
         this.defaultValue = defaultValue;
     }
 
-    public abstract void apply(Map<String, Object> mappings, Object[] parameters, Expression expression);
+    public abstract void apply(Map<String, Object> mappings, Parameters parameters, Expression expression);
 
     public void applyValue(Map<String, Object> mappings, Object value) {
         try {

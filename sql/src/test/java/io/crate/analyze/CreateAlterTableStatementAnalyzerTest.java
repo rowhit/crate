@@ -694,7 +694,7 @@ public class CreateAlterTableStatementAnalyzerTest extends BaseAnalyzerTest {
     public void testExplicitSchemaHasPrecedenceOverDefaultSchema() throws Exception {
         CreateTableAnalyzedStatement statement = (CreateTableAnalyzedStatement) analyzer.analyze(
                 SqlParser.createStatement("create table foo.bar (x string)"),
-                new ParameterContext(new Object[0], new Object[0][], "hoschi")).analyzedStatement();
+                new ParameterContext(Parameters.EMPTY, Parameters.EMPTY_BULK, "hoschi")).analyzedStatement();
 
         // schema from statement must take precedence
         assertThat(statement.tableIdent().schema(), is("foo"));
@@ -704,7 +704,7 @@ public class CreateAlterTableStatementAnalyzerTest extends BaseAnalyzerTest {
     public void testDefaultSchemaIsAddedToTableIdentIfNoEplicitSchemaExistsInTheStatement() throws Exception {
         CreateTableAnalyzedStatement statement = (CreateTableAnalyzedStatement) analyzer.analyze(
                 SqlParser.createStatement("create table bar (x string)"),
-                new ParameterContext(new Object[0], new Object[0][], "hoschi")).analyzedStatement();
+                new ParameterContext(Parameters.EMPTY, Parameters.EMPTY_BULK, "hoschi")).analyzedStatement();
 
         assertThat(statement.tableIdent().schema(), is("hoschi"));
     }

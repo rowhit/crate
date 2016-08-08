@@ -62,7 +62,7 @@ public class MatchOptionsAnalysis {
             .put("zero_terms_query", IS_STRING)
             .build();
 
-    public static Map<String, Object> process(GenericProperties properties, Object[] parameters) {
+    public static Map<String, Object> process(GenericProperties properties, Parameters parameters) {
         Map<String, Object> processed = new HashMap<>(properties.properties().size());
         for (Map.Entry<String, Expression> option : properties.properties().entrySet()) {
             Predicate<Object> validator = ALLOWED_SETTINGS.get(option.getKey());

@@ -39,7 +39,7 @@ import java.util.*;
 public class PartitionPropertiesAnalyzer {
 
     public static Map<ColumnIdent, Object> assignmentsToMap(List<Assignment> assignments,
-                                                       Object[] parameters) {
+                                                            Parameters parameters) {
         Map<ColumnIdent, Object> map = new HashMap<>(assignments.size());
         for (Assignment assignment : assignments) {
             map.put(
@@ -52,7 +52,7 @@ public class PartitionPropertiesAnalyzer {
 
     public static PartitionName toPartitionName(DocTableInfo tableInfo,
                                                 List<Assignment> partitionProperties,
-                                                Object[] parameters) {
+                                                Parameters parameters) {
         Preconditions.checkArgument(tableInfo.isPartitioned(), "table '%s' is not partitioned", tableInfo.ident().fqn());
         Preconditions.checkArgument(partitionProperties.size() == tableInfo.partitionedBy().size(),
                 "The table \"%s\" is partitioned by %s columns but the PARTITION clause contains %s columns",
@@ -82,7 +82,7 @@ public class PartitionPropertiesAnalyzer {
     public static PartitionName toPartitionName(TableIdent tableIdent,
                                                 @Nullable DocTableInfo docTableInfo,
                                                 List<Assignment> partitionProperties,
-                                                Object[] parameters) {
+                                                Parameters parameters) {
         if (docTableInfo != null) {
             return toPartitionName(docTableInfo, partitionProperties, parameters);
         }
@@ -100,7 +100,7 @@ public class PartitionPropertiesAnalyzer {
 
     public static String toPartitionIdent(DocTableInfo tableInfo,
                                           List<Assignment> partitionProperties,
-                                          Object[] parameters) {
+                                          Parameters parameters) {
         return toPartitionName(tableInfo, partitionProperties, parameters).ident();
     }
 }
