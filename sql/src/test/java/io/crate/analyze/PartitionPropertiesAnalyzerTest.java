@@ -65,7 +65,7 @@ public class PartitionPropertiesAnalyzerTest extends BaseAnalyzerTest {
                 Arrays.asList(new Assignment(
                         new QualifiedNameReference(new QualifiedName("name")),
                         new StringLiteral("foo"))),
-                new Object[0]);
+                Parameters.EMPTY);
         assertThat(partitionName.asIndexName(), is(".partitioned.users.0426crrf"));
     }
 }

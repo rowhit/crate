@@ -117,7 +117,7 @@ public class CopyStatementAnalyzer {
         return new CopyFromAnalyzedStatement(tableInfo, settings, uri, partitionIdent, nodeFilters);
     }
 
-    private static Predicate<DiscoveryNode> discoveryNodePredicate(Object[] parameters, @Nullable Expression nodeFiltersExpression) {
+    private static Predicate<DiscoveryNode> discoveryNodePredicate(Parameters parameters, @Nullable Expression nodeFiltersExpression) {
         if (nodeFiltersExpression == null) {
             return Predicates.alwaysTrue();
         }

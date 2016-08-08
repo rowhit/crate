@@ -24,6 +24,7 @@ package io.crate.testing;
 
 import io.crate.analyze.AnalysisMetaData;
 import io.crate.analyze.ParameterContext;
+import io.crate.analyze.Parameters;
 import io.crate.analyze.expressions.ExpressionAnalysisContext;
 import io.crate.analyze.expressions.ExpressionAnalyzer;
 import io.crate.analyze.relations.AnalyzedRelation;
@@ -41,6 +42,7 @@ import org.elasticsearch.common.inject.Injector;
 import org.elasticsearch.common.inject.ModulesBuilder;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Map;
 
 import static org.mockito.Mockito.mock;
@@ -85,7 +87,8 @@ public class SqlExpressions {
         analysisMetaData = new AnalysisMetaData(injector.getInstance(Functions.class), schemas, referenceResolver);
         expressionAnalyzer =  new ExpressionAnalyzer(
                 analysisMetaData,
-                new ParameterContext(parameters == null ? new Object[0] : parameters, new Object[0][], null),
+                new ParameterContext(parameters == null
+                    ? Parameters.EMPTY : new Parameters(Arrays.asList(parameters)), Parameters.EMPTY_BULK, null),
                 new FullQualifedNameFieldProvider(sources),
                 fieldResolver);
         expressionAnalysisCtx = new ExpressionAnalysisContext(new StmtCtx());

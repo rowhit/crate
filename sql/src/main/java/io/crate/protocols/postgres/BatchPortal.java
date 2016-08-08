@@ -27,6 +27,7 @@ import io.crate.action.sql.RowReceiverToResultReceiver;
 import io.crate.analyze.Analysis;
 import io.crate.analyze.AnalyzedStatement;
 import io.crate.analyze.ParameterContext;
+import io.crate.analyze.Parameters;
 import io.crate.analyze.symbol.Field;
 import io.crate.analyze.symbol.Symbols;
 import io.crate.concurrent.CompletionListener;
@@ -42,12 +43,11 @@ import io.crate.types.DataType;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-
-import static io.crate.action.sql.SQLBulkRequest.EMPTY_BULK_ARGS;
 
 class BatchPortal extends AbstractPortal {
 
@@ -100,8 +100,8 @@ class BatchPortal extends AbstractPortal {
         batchParams.add(params);
         this.resultFormatCodes.add(resultFormatCodes);
         analysis.add(sessionData.getAnalyzer().analyze(statement,
-            new ParameterContext(getArgs(),
-                EMPTY_BULK_ARGS,
+            new ParameterContext(new Parameters(getArgs()),
+                Collections.singletonList(Parameters.EMPTY),
                 sessionData.getDefaultSchema(),
                 sessionData.options())));
         return this;
@@ -146,8 +146,8 @@ class BatchPortal extends AbstractPortal {
         }
     }
 
-    private Object[] getArgs() {
-        return batchParams.get(batchParams.size() - 1).toArray(new Object[0]);
+    private List<Object> getArgs() {
+        return batchParams.get(batchParams.size() - 1);
     }
 
     private void validate(Analysis analysis) {

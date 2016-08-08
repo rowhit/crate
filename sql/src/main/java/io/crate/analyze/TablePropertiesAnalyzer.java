@@ -120,14 +120,14 @@ public class TablePropertiesAnalyzer {
     public void analyze(TableParameter tableParameter,
                         TableParameterInfo tableParameterInfo,
                         Optional<GenericProperties> properties,
-                        Object[] parameters) {
+                        Parameters parameters) {
         analyze(tableParameter, tableParameterInfo, properties, parameters, false);
     }
 
     public void analyze(TableParameter tableParameter,
                         TableParameterInfo tableParameterInfo,
                         Optional<GenericProperties> properties,
-                        Object[] parameters,
+                        Parameters parameters,
                         boolean withDefaults) {
         if (withDefaults) {
             SettingsApplier settingsApplier = SETTINGS_APPLIER.get(TableParameterInfo.NUMBER_OF_REPLICAS);
@@ -207,7 +207,7 @@ public class TablePropertiesAnalyzer {
 
         @Override
         public void apply(Settings.Builder settingsBuilder,
-                          Object[] parameters,
+                          Parameters parameters,
                           Expression expression) {
             Preconditions.checkArgument(!(expression instanceof ArrayLiteral),
                     String.format(Locale.ENGLISH, "array literal not allowed for \"%s\"", ES_TO_CRATE_SETTINGS_MAP.get(TableParameterInfo.NUMBER_OF_REPLICAS)));
@@ -248,7 +248,7 @@ public class TablePropertiesAnalyzer {
 
         @Override
         public void apply(Settings.Builder settingsBuilder,
-                          Object[] parameters,
+                          Parameters parameters,
                           Expression expression) {
             Number refreshIntervalValue;
             try {
@@ -290,7 +290,7 @@ public class TablePropertiesAnalyzer {
 
         @SuppressWarnings("SuspiciousMethodCalls")
         @Override
-        public void apply(Settings.Builder settingsBuilder, Object[] parameters, Expression expression) {
+        public void apply(Settings.Builder settingsBuilder, Parameters parameters, Expression expression) {
             Object shardsRecoverySettings;
             try {
                 shardsRecoverySettings = ExpressionToNumberVisitor.convert(expression, parameters).intValue();
@@ -315,7 +315,7 @@ public class TablePropertiesAnalyzer {
 
         @Override
         public void apply(Settings.Builder settingsBuilder,
-                          Object[] parameters,
+                          Parameters parameters,
                           Expression expression) {
             int numberOfShardsValue = 0;
             try {
@@ -349,7 +349,7 @@ public class TablePropertiesAnalyzer {
 
         @Override
         public void apply(Settings.Builder settingsBuilder,
-                          Object[] parameters,
+                          Parameters parameters,
                           Expression expression) {
             String blobPath;
             try {
@@ -376,7 +376,7 @@ public class TablePropertiesAnalyzer {
 
         @Override
         public void apply(Map<String, Object> mappings,
-                          Object[] parameters,
+                          Parameters parameters,
                           Expression expression) {
             ColumnPolicy policy;
             try {

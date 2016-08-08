@@ -89,7 +89,7 @@ public class NumberOfShardsTest extends CrateUnitTest {
     @Test
     public void testGetNumberOfShards() {
         ClusteredBy clusteredBy = new ClusteredBy(QNAME_REF, LongLiteral.fromObject(7));
-        assertThat(numberOfShards.fromClusteredByClause(clusteredBy, new Object[0]), is(7));
+        assertThat(numberOfShards.fromClusteredByClause(clusteredBy, Parameters.EMPTY), is(7));
     }
 
     @Test
@@ -97,8 +97,7 @@ public class NumberOfShardsTest extends CrateUnitTest {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage("num_shards in CLUSTERED clause must be greater than 0");
         numberOfShards.fromClusteredByClause(
-                new ClusteredBy(QNAME_REF, LongLiteral.fromObject(0)), new Object[0]
-        );
+                new ClusteredBy(QNAME_REF, LongLiteral.fromObject(0)), Parameters.EMPTY);
     }
 
 }

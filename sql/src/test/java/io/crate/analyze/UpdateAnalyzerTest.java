@@ -146,12 +146,12 @@ public class UpdateAnalyzerTest extends BaseAnalyzerTest {
 
     protected UpdateAnalyzedStatement analyze(String statement, Object[] params) {
         return (UpdateAnalyzedStatement) analyzer.analyze(SqlParser.createStatement(statement),
-                new ParameterContext(params, new Object[0][], Schemas.DEFAULT_SCHEMA_NAME)).analyzedStatement();
+                new ParameterContext(new Parameters(params), Parameters.EMPTY_BULK, Schemas.DEFAULT_SCHEMA_NAME)).analyzedStatement();
     }
 
     protected UpdateAnalyzedStatement analyze(String statement, Object[][] bulkArgs) {
         return (UpdateAnalyzedStatement) analyzer.analyze(SqlParser.createStatement(statement),
-                new ParameterContext(new Object[0], bulkArgs, Schemas.DEFAULT_SCHEMA_NAME)).analyzedStatement();
+                new ParameterContext(Parameters.EMPTY, Parameters.toBulkParams(bulkArgs), Schemas.DEFAULT_SCHEMA_NAME)).analyzedStatement();
     }
 
     @Test

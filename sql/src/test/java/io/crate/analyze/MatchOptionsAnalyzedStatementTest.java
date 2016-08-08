@@ -38,7 +38,7 @@ public class MatchOptionsAnalyzedStatementTest extends CrateUnitTest {
         props.add(new GenericProperty("analyzer", new StringLiteral("english")));
         props.add(new GenericProperty("operator", new StringLiteral("and")));
         props.add(new GenericProperty("fuzziness", new ParameterExpression(1)));
-        Map<String, Object> processed = MatchOptionsAnalysis.process(props, new Object[]{12});
+        Map<String, Object> processed = MatchOptionsAnalysis.process(props, new Parameters(12));
         assertThat(
                 mapToSortedString(processed),
                 is("analyzer=english, fuzziness=12, operator=and"));
@@ -55,7 +55,7 @@ public class MatchOptionsAnalyzedStatementTest extends CrateUnitTest {
         props.add(new GenericProperty("fuzziness", new ParameterExpression(1)));
         props.add(new GenericProperty("analyzer_wrong", new StringLiteral("english")));
 
-        MatchOptionsAnalysis.process(props, new Object[]{12});
+        MatchOptionsAnalysis.process(props, new Parameters(12));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class MatchOptionsAnalyzedStatementTest extends CrateUnitTest {
         props.add(new GenericProperty("max_expansions", new StringLiteral("abc")));
         props.add(new GenericProperty("analyzer", new StringLiteral("english")));
 
-        MatchOptionsAnalysis.process(props, new Object[]{""});
+        MatchOptionsAnalysis.process(props, new Parameters(""));
     }
 
 }

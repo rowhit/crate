@@ -28,6 +28,7 @@ import io.crate.types.DataTypes;
 import org.apache.lucene.util.BytesRef;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static io.crate.testing.TestingHelpers.isLiteral;
@@ -36,20 +37,17 @@ import static org.hamcrest.Matchers.is;
 
 public class ParameterContextTest extends CrateUnitTest {
 
-    private final static Object[] EMPTY_ARGS = new Object[0];
-    private final static Object[][] EMPTY_BULK_ARGS = new Object[0][];
-
     @Test
     public void testEmpty() throws Exception {
-        ParameterContext ctx = new ParameterContext(EMPTY_ARGS, EMPTY_BULK_ARGS, null);
+        ParameterContext ctx = new ParameterContext(Parameters.EMPTY, Parameters.EMPTY_BULK, null);
         assertFalse(ctx.hasBulkParams());
-        assertThat(ctx.parameters(), is(new Object[0]));
+        assertThat(ctx.parameters(), is(Parameters.EMPTY));
     }
 
     @Test
     public void testArgs() throws Exception {
-        Object[] args = new Object[] { true, 1, null, "string" };
-        ParameterContext ctx = new ParameterContext(args, EMPTY_BULK_ARGS, null);
+        Parameters args = new Parameters(Arrays.asList( true, 1, null, "string" ));
+        ParameterContext ctx = new ParameterContext(args, Parameters.EMPTY_BULK, null);
         assertFalse(ctx.hasBulkParams());
         assertThat(ctx.parameters(), is(args));
     }
@@ -60,7 +58,7 @@ public class ParameterContextTest extends CrateUnitTest {
                 new Object[]{ true, 1, "foo", null, new String[]{null} },
                 new Object[]{ false, 2, "bar", new Object[0], new String[]{"foo", "bar"} }
         };
-        ParameterContext ctx = new ParameterContext(EMPTY_ARGS, bulkArgs, null);
+        ParameterContext ctx = new ParameterContext(Parameters.EMPTY, Parameters.toBulkParams(bulkArgs), null);
         assertTrue(ctx.hasBulkParams());
         ctx.setBulkIdx(0);
         assertThat(ctx.getAsSymbol(0), isLiteral(true));
@@ -84,7 +82,7 @@ public class ParameterContextTest extends CrateUnitTest {
                 new Object[]{ "foo" },
                 new Object[]{ false, 1 }
         };
-        new ParameterContext(EMPTY_ARGS, bulkArgs, null);
+        new ParameterContext(Parameters.EMPTY, Parameters.toBulkParams(bulkArgs), null);
     }
 
     @Test
@@ -101,7 +99,7 @@ public class ParameterContextTest extends CrateUnitTest {
                 new Object[]{obj1},
                 new Object[]{obj2},
         };
-        ParameterContext ctx = new ParameterContext(EMPTY_ARGS, bulkArgs, null);
+        ParameterContext ctx = new ParameterContext(Parameters.EMPTY, Parameters.toBulkParams(bulkArgs), null);
         ctx.setBulkIdx(0);
         assertThat(ctx.getAsSymbol(0), isLiteral(obj1, DataTypes.OBJECT));
         ctx.setBulkIdx(1);
@@ -114,7 +112,7 @@ public class ParameterContextTest extends CrateUnitTest {
                 new Object[] { new String[][] { new String[]{ null } } },
                 new Object[] { new String[][] { new String[]{ "foo" } } },
         };
-        ParameterContext ctx = new ParameterContext(EMPTY_ARGS, bulkArgs, null);
+        ParameterContext ctx = new ParameterContext(Parameters.EMPTY, Parameters.toBulkParams(bulkArgs), null);
         assertThat(ctx.getAsSymbol(0), isLiteral(bulkArgs[0][0], new ArrayType(new ArrayType(DataTypes.UNDEFINED))));
     }
 
@@ -124,7 +122,7 @@ public class ParameterContextTest extends CrateUnitTest {
                 new Object[] { new String[][] { new String[0] } },
                 new Object[] { new String[][] { new String[0] } },
         };
-        ParameterContext ctx = new ParameterContext(EMPTY_ARGS, bulkArgs, null);
+        ParameterContext ctx = new ParameterContext(Parameters.EMPTY, Parameters.toBulkParams(bulkArgs), null);
         assertThat(ctx.getAsSymbol(0), isLiteral(bulkArgs[0][0], new ArrayType(new ArrayType(DataTypes.UNDEFINED))));
     }
 }

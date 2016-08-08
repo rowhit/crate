@@ -39,7 +39,7 @@ public class NumberOfShards {
         this.clusterService = clusterService;
     }
 
-    int fromClusteredByClause(ClusteredBy clusteredBy, Object[] parameters) {
+    int fromClusteredByClause(ClusteredBy clusteredBy, Parameters parameters) {
         if (clusteredBy.numberOfShards().isPresent()) {
             int numShards = ExpressionToNumberVisitor.convert(clusteredBy.numberOfShards().get(), parameters).intValue();
             if (numShards < 1) {

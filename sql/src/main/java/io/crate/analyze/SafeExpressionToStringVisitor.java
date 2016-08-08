@@ -30,23 +30,23 @@ import org.apache.lucene.util.BytesRef;
 import javax.annotation.Nullable;
 import java.util.Locale;
 
-public class SafeExpressionToStringVisitor extends AstVisitor<String, Object[]> {
+public class SafeExpressionToStringVisitor extends AstVisitor<String, Parameters> {
 
     private final static SafeExpressionToStringVisitor INSTANCE = new SafeExpressionToStringVisitor();
     private SafeExpressionToStringVisitor() {}
 
-    public static String convert(Node node, @Nullable Object[] context) {
+    public static String convert(Node node, @Nullable Parameters context) {
         return INSTANCE.process(node, context);
     }
 
     @Override
-    protected String visitStringLiteral(StringLiteral node, Object[] parameters) {
+    protected String visitStringLiteral(StringLiteral node, Parameters parameters) {
         return node.getValue();
     }
 
     @Override
-    public String visitParameterExpression(ParameterExpression node, Object[] parameters) {
-        Object value = parameters[node.index()];
+    public String visitParameterExpression(ParameterExpression node, Parameters parameters) {
+        Object value = parameters.get(node.index());
         if (value instanceof BytesRef) {
             return ((BytesRef) value).utf8ToString();
         }
@@ -57,7 +57,7 @@ public class SafeExpressionToStringVisitor extends AstVisitor<String, Object[]> 
     }
 
     @Override
-    protected String visitNode(Node node, Object[] context) {
+    protected String visitNode(Node node, Parameters context) {
         throw new IllegalArgumentException(String.format(Locale.ENGLISH, "Can't handle %s.", node));
     }
 }

@@ -26,6 +26,8 @@ import io.crate.types.DataType;
 import io.crate.types.DataTypes;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -35,32 +37,30 @@ import static io.crate.analyze.symbol.Literal.newLiteral;
 public class ParameterContext {
 
     public static final ParameterContext EMPTY = new ParameterContext(
-            new Object[0], new Object[0][], null, SQLOperations.Option.NONE);
-
-    final Object[] parameters;
-
-    final Object[][] bulkParameters;
+        Parameters.EMPTY, Collections.singletonList(Parameters.EMPTY), null, SQLOperations.Option.NONE);
 
     @Nullable
     private final String defaultSchema;
 
     private final Set<SQLOperations.Option> options;
+    private final Parameters parameters;
+    private final List<Parameters> bulkParameters;
 
     private int currentIdx = 0;
 
 
-    public ParameterContext(Object[] parameters, Object[][] bulkParameters,
+    public ParameterContext(Parameters parameters, List<Parameters> bulkParameters,
                             @Nullable String defaultSchema, Set<SQLOperations.Option> options) {
         this.parameters = parameters;
         this.defaultSchema = defaultSchema;
         this.options = options;
-        if (bulkParameters.length > 0) {
+        if (bulkParameters.size() > 0) {
             validateBulkParams(bulkParameters);
         }
         this.bulkParameters = bulkParameters;
     }
 
-    public ParameterContext(Object[] parameters, Object[][] bulkParameters, @Nullable String defaultSchema) {
+    public ParameterContext(Parameters parameters, List<Parameters> bulkParameters, @Nullable String defaultSchema) {
         this(parameters, bulkParameters, defaultSchema, SQLOperations.Option.NONE);
     }
 
@@ -73,10 +73,10 @@ public class ParameterContext {
         return defaultSchema;
     }
 
-    private void validateBulkParams(Object[][] bulkParams) {
-        int length = bulkParams[0].length;
-        for (Object[] bulkParam : bulkParams) {
-            if (bulkParam.length != length) {
+    private void validateBulkParams(List<Parameters> bulkParams) {
+        int length = bulkParams.get(0).size();
+        for (Parameters bulkParam : bulkParams) {
+            if (bulkParam.size() != length) {
                 throw new IllegalArgumentException("mixed number of arguments inside bulk arguments");
             }
         }
@@ -92,23 +92,27 @@ public class ParameterContext {
     }
 
     public boolean hasBulkParams() {
-        return bulkParameters.length > 0;
+        return bulkParameters.size() > 0;
+    }
+
+    public int numBulkParams() {
+        return bulkParameters.size();
     }
 
     public void setBulkIdx(int i) {
         this.currentIdx = i;
     }
 
-    public Object[] parameters() {
+    public Parameters parameters() {
         if (hasBulkParams()) {
-            return bulkParameters[currentIdx];
+            return bulkParameters.get(currentIdx);
         }
         return parameters;
     }
 
     public io.crate.analyze.symbol.Literal getAsSymbol(int index) {
         try {
-            Object value = parameters()[index];
+            Object value = parameters().get(index);
             DataType type = guessTypeSafe(value);
             // use type.value because some types need conversion (String to BytesRef, List to Array)
             return newLiteral(type, type.value(value));
