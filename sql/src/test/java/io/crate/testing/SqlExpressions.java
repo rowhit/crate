@@ -77,7 +77,7 @@ public class SqlExpressions {
         injector = modulesBuilder.createInjector();
         NestedReferenceResolver referenceResolver = new NestedReferenceResolver() {
             @Override
-            public ReferenceImplementation<?> getImplementation(ReferenceInfo refInfo) {
+            public ReferenceImplementation<?> getImplementation(Reference refInfo) {
                 throw new UnsupportedOperationException("getImplementation not implemented");
             }
         };

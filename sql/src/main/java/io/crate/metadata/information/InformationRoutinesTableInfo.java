@@ -39,19 +39,19 @@ public class InformationRoutinesTableInfo extends InformationTableInfo {
     }
 
     public static class ReferenceInfos {
-        public static final ReferenceInfo ROUTINE_NAME = info(Columns.ROUTINE_NAME, DataTypes.STRING);
-        public static final ReferenceInfo ROUTINE_TYPE = info(Columns.ROUTINE_TYPE, DataTypes.STRING);
+        public static final Reference ROUTINE_NAME = info(Columns.ROUTINE_NAME, DataTypes.STRING);
+        public static final Reference ROUTINE_TYPE = info(Columns.ROUTINE_TYPE, DataTypes.STRING);
     }
 
-    private static ReferenceInfo info(ColumnIdent columnIdent, DataType dataType) {
-        return new ReferenceInfo(new ReferenceIdent(IDENT, columnIdent), RowGranularity.DOC, dataType);
+    private static Reference info(ColumnIdent columnIdent, DataType dataType) {
+        return new Reference(new ReferenceIdent(IDENT, columnIdent), RowGranularity.DOC, dataType);
     }
 
     protected InformationRoutinesTableInfo(ClusterService clusterService) {
         super(clusterService,
                 IDENT,
                 ImmutableList.<ColumnIdent>of(),
-                ImmutableSortedMap.<ColumnIdent, ReferenceInfo>naturalOrder()
+                ImmutableSortedMap.<ColumnIdent, Reference>naturalOrder()
                     .put(Columns.ROUTINE_NAME, ReferenceInfos.ROUTINE_NAME)
                     .put(Columns.ROUTINE_TYPE, ReferenceInfos.ROUTINE_TYPE)
                     .build()

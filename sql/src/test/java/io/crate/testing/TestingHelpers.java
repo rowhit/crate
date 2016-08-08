@@ -165,11 +165,10 @@ public class TestingHelpers {
     }
 
     public static Reference createReference(String tableName, ColumnIdent columnIdent, DataType dataType) {
-        return new Reference(new ReferenceInfo(
+        return new Reference(
                 new ReferenceIdent(new TableIdent(null, tableName), columnIdent),
                 RowGranularity.DOC,
-                dataType
-        ));
+                dataType);
     }
 
     public static String readFile(String path) throws IOException {
@@ -362,11 +361,11 @@ public class TestingHelpers {
 
     }
 
-    public static Matcher<ReferenceInfo> isReferenceInfo(final String expectedName) {
-        return new TypeSafeDiagnosingMatcher<ReferenceInfo>() {
+    public static Matcher<Reference> isReferenceInfo(final String expectedName) {
+        return new TypeSafeDiagnosingMatcher<Reference>() {
 
             @Override
-            public boolean matchesSafely(ReferenceInfo item, Description desc) {
+            public boolean matchesSafely(Reference item, Description desc) {
                 String name = item.ident().columnIdent().outputName();
                 if (!name.equals(expectedName)) {
                     desc.appendText("different name ").appendValue(name);
@@ -377,7 +376,7 @@ public class TestingHelpers {
 
             @Override
             public void describeTo(Description description) {
-                StringBuilder builder = new StringBuilder("a ReferenceInfo with name ").append(expectedName);
+                StringBuilder builder = new StringBuilder("a Reference with name ").append(expectedName);
                 description.appendText(builder.toString());
             }
         };
@@ -397,12 +396,12 @@ public class TestingHelpers {
                     desc.appendText("not a Reference: ").appendText(item.getClass().getName());
                     return false;
                 }
-                String name = ((Reference) item).info().ident().columnIdent().outputName();
+                String name = ((Reference) item).ident().columnIdent().outputName();
                 if (!name.equals(Identifiers.quoteIfNeeded(expectedName))) {
                     desc.appendText("different name ").appendValue(name);
                     return false;
                 }
-                if (dataType != null && !((Reference) item).info().type().equals(dataType)) {
+                if (dataType != null && !item.valueType().equals(dataType)) {
                     desc.appendText("different type ").appendValue(dataType.toString());
                 }
                 return true;
@@ -531,7 +530,7 @@ public class TestingHelpers {
         return threadPool;
     }
 
-    public static ReferenceInfo refInfo(String fqColumnName, DataType dataType, RowGranularity rowGranularity, String... nested) {
+    public static Reference refInfo(String fqColumnName, DataType dataType, RowGranularity rowGranularity, String... nested) {
         String[] parts = fqColumnName.split("\\.");
         ReferenceIdent refIdent;
 
@@ -549,7 +548,7 @@ public class TestingHelpers {
             default:
                 throw new IllegalArgumentException("fqColumnName must contain <table>.<column> or <schema>.<table>.<column>");
         }
-        return new ReferenceInfo(refIdent, rowGranularity, dataType);
+        return new Reference(refIdent, rowGranularity, dataType);
     }
 
     public static <T> Matcher<T> isSQL(final String stmt) {

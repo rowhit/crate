@@ -24,7 +24,6 @@ package io.crate.metadata;
 
 import io.crate.analyze.symbol.InputColumn;
 import io.crate.analyze.symbol.Literal;
-import io.crate.analyze.symbol.Reference;
 import io.crate.analyze.symbol.Symbol;
 import io.crate.types.DataType;
 import org.elasticsearch.common.xcontent.support.XContentMapValues;
@@ -34,22 +33,22 @@ import java.util.*;
 public class ReferenceToLiteralConverter extends ReplacingSymbolVisitor<ReferenceToLiteralConverter.Context> {
 
     public static class Context {
-        private final Map<ReferenceInfo, InputColumn> referenceInfoInputColumnMap;
+        private final Map<Reference, InputColumn> referenceInfoInputColumnMap;
         private final BitSet inputIsMap;
         private Object[] values;
 
-        public Context(List<Reference> insertColumns, Collection<ReferenceInfo> allReferencedReferences) {
+        public Context(List<Reference> insertColumns, Collection<Reference> allReferencedReferences) {
             referenceInfoInputColumnMap = new HashMap<>(allReferencedReferences.size());
             inputIsMap = new BitSet(insertColumns.size());
-            for (ReferenceInfo referenceInfo : allReferencedReferences) {
+            for (Reference referenceInfo : allReferencedReferences) {
                 int idx = 0;
                 for (Reference reference : insertColumns) {
-                    if (reference.info().equals(referenceInfo)) {
-                        referenceInfoInputColumnMap.put(referenceInfo, new InputColumn(idx, referenceInfo.type()));
+                    if (reference.equals(referenceInfo)) {
+                        referenceInfoInputColumnMap.put(referenceInfo, new InputColumn(idx, referenceInfo.valueType()));
                         inputIsMap.set(idx, false);
                         break;
                     } else if (referenceInfo.ident().columnIdent().isChildOf(reference.ident().columnIdent())) {
-                        referenceInfoInputColumnMap.put(referenceInfo, new InputColumn(idx, referenceInfo.type()));
+                        referenceInfoInputColumnMap.put(referenceInfo, new InputColumn(idx, referenceInfo.valueType()));
                         inputIsMap.set(idx, true);
                         break;
                     }
@@ -66,7 +65,7 @@ public class ReferenceToLiteralConverter extends ReplacingSymbolVisitor<Referenc
         public Symbol resolveReferenceValue(Reference reference) {
             assert values != null : "values must be set first";
 
-            InputColumn inputColumn = referenceInfoInputColumnMap.get(reference.info());
+            InputColumn inputColumn = referenceInfoInputColumnMap.get(reference);
             if (inputColumn != null) {
                 assert inputColumn.valueType() != null : "expects dataType to be set on InputColumn";
                 DataType dataType = inputColumn.valueType();

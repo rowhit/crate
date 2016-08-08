@@ -35,82 +35,82 @@ public class InformationTablesTableInfo extends InformationTableInfo {
     public static final TableIdent IDENT = new TableIdent(InformationSchemaInfo.NAME, NAME);
 
     public static class ReferenceInfos {
-        public static final ReferenceInfo SCHEMA_NAME = info(Columns.SCHEMA_NAME, DataTypes.STRING);
-        public static final ReferenceInfo TABLE_NAME = info(Columns.TABLE_NAME, DataTypes.STRING);
-        public static final ReferenceInfo NUMBER_OF_SHARDS = info(Columns.NUMBER_OF_SHARDS, DataTypes.INTEGER);
-        public static final ReferenceInfo NUMBER_OF_REPLICAS = info(Columns.NUMBER_OF_REPLICAS, DataTypes.STRING);
-        public static final ReferenceInfo CLUSTERED_BY = info(Columns.CLUSTERED_BY, DataTypes.STRING);
-        public static final ReferenceInfo PARTITIONED_BY = info(Columns.PARTITIONED_BY, new ArrayType(DataTypes.STRING));
-        public static final ReferenceInfo BLOBS_PATH = info(Columns.BLOBS_PATH, DataTypes.STRING);
-        public static final ReferenceInfo COLUMN_POLICY = info(Columns.COLUMN_POLICY, DataTypes.STRING);
+        public static final Reference SCHEMA_NAME = info(Columns.SCHEMA_NAME, DataTypes.STRING);
+        public static final Reference TABLE_NAME = info(Columns.TABLE_NAME, DataTypes.STRING);
+        public static final Reference NUMBER_OF_SHARDS = info(Columns.NUMBER_OF_SHARDS, DataTypes.INTEGER);
+        public static final Reference NUMBER_OF_REPLICAS = info(Columns.NUMBER_OF_REPLICAS, DataTypes.STRING);
+        public static final Reference CLUSTERED_BY = info(Columns.CLUSTERED_BY, DataTypes.STRING);
+        public static final Reference PARTITIONED_BY = info(Columns.PARTITIONED_BY, new ArrayType(DataTypes.STRING));
+        public static final Reference BLOBS_PATH = info(Columns.BLOBS_PATH, DataTypes.STRING);
+        public static final Reference COLUMN_POLICY = info(Columns.COLUMN_POLICY, DataTypes.STRING);
 
-        public static final ReferenceInfo TABLE_SETTINGS = info(Columns.TABLE_SETTINGS, DataTypes.OBJECT);
+        public static final Reference TABLE_SETTINGS = info(Columns.TABLE_SETTINGS, DataTypes.OBJECT);
 
-        public static final ReferenceInfo TABLE_SETTINGS_REFRESH_INTERVAL = info(
+        public static final Reference TABLE_SETTINGS_REFRESH_INTERVAL = info(
                 Columns.TABLE_SETTINGS_REFRESH_INTERVAL, DataTypes.LONG);
 
-        public static final ReferenceInfo TABLE_SETTINGS_BLOCKS = info(
+        public static final Reference TABLE_SETTINGS_BLOCKS = info(
                 Columns.TABLE_SETTINGS_BLOCKS, DataTypes.OBJECT);
-        public static final ReferenceInfo TABLE_SETTINGS_BLOCKS_READ_ONLY = info(
+        public static final Reference TABLE_SETTINGS_BLOCKS_READ_ONLY = info(
                 Columns.TABLE_SETTINGS_BLOCKS_READ_ONLY, DataTypes.BOOLEAN);
-        public static final ReferenceInfo TABLE_SETTINGS_BLOCKS_READ = info(
+        public static final Reference TABLE_SETTINGS_BLOCKS_READ = info(
                 Columns.TABLE_SETTINGS_BLOCKS_READ, DataTypes.BOOLEAN);
-        public static final ReferenceInfo TABLE_SETTINGS_BLOCKS_WRITE = info(
+        public static final Reference TABLE_SETTINGS_BLOCKS_WRITE = info(
                 Columns.TABLE_SETTINGS_BLOCKS_WRITE, DataTypes.BOOLEAN);
-        public static final ReferenceInfo TABLE_SETTINGS_BLOCKS_METADATA = info(
+        public static final Reference TABLE_SETTINGS_BLOCKS_METADATA = info(
                 Columns.TABLE_SETTINGS_BLOCKS_METADATA, DataTypes.BOOLEAN);
 
-        public static final ReferenceInfo TABLE_SETTINGS_TRANSLOG = info(
+        public static final Reference TABLE_SETTINGS_TRANSLOG = info(
                 Columns.TABLE_SETTINGS_TRANSLOG, DataTypes.OBJECT);
-        public static final ReferenceInfo TABLE_SETTINGS_TRANSLOG_FLUSH_THRESHOLD_OPS = info(
+        public static final Reference TABLE_SETTINGS_TRANSLOG_FLUSH_THRESHOLD_OPS = info(
                 Columns.TABLE_SETTINGS_TRANSLOG_FLUSH_THRESHOLD_OPS, DataTypes.INTEGER);
-        public static final ReferenceInfo TABLE_SETTINGS_TRANSLOG_FLUSH_THRESHOLD_SIZE = info(
+        public static final Reference TABLE_SETTINGS_TRANSLOG_FLUSH_THRESHOLD_SIZE = info(
                 Columns.TABLE_SETTINGS_TRANSLOG_FLUSH_THRESHOLD_SIZE, DataTypes.LONG);
-        public static final ReferenceInfo TABLE_SETTINGS_TRANSLOG_FLUSH_THRESHOLD_PERIOD = info(
+        public static final Reference TABLE_SETTINGS_TRANSLOG_FLUSH_THRESHOLD_PERIOD = info(
                 Columns.TABLE_SETTINGS_TRANSLOG_FLUSH_THRESHOLD_PERIOD, DataTypes.LONG);
-        public static final ReferenceInfo TABLE_SETTINGS_TRANSLOG_DISABLE_FLUSH = info(
+        public static final Reference TABLE_SETTINGS_TRANSLOG_DISABLE_FLUSH = info(
                 Columns.TABLE_SETTINGS_TRANSLOG_DISABLE_FLUSH, DataTypes.BOOLEAN);
-        public static final ReferenceInfo TABLE_SETTINGS_TRANSLOG_INTERVAL = info(
+        public static final Reference TABLE_SETTINGS_TRANSLOG_INTERVAL = info(
                 Columns.TABLE_SETTINGS_TRANSLOG_INTERVAL, DataTypes.LONG);
-        
-        public static final ReferenceInfo TABLE_SETTINGS_ROUTING= info(
+
+        public static final Reference TABLE_SETTINGS_ROUTING= info(
                 Columns.TABLE_SETTINGS_ROUTING, DataTypes.OBJECT);
-        public static final ReferenceInfo TABLE_SETTINGS_ROUTING_ALLOCATION = info(
+        public static final Reference TABLE_SETTINGS_ROUTING_ALLOCATION = info(
                 Columns.TABLE_SETTINGS_ROUTING_ALLOCATION, DataTypes.OBJECT);
-        public static final ReferenceInfo TABLE_SETTINGS_ROUTING_ALLOCATION_ENABLE = info(
+        public static final Reference TABLE_SETTINGS_ROUTING_ALLOCATION_ENABLE = info(
                 Columns.TABLE_SETTINGS_ROUTING_ALLOCATION_ENABLE, DataTypes.STRING);
-        public static final ReferenceInfo TABLE_SETTINGS_ROUTING_ALLOCATION_TOTAL_SHARDS_PER_NODE = info(
+        public static final Reference TABLE_SETTINGS_ROUTING_ALLOCATION_TOTAL_SHARDS_PER_NODE = info(
                 Columns.TABLE_SETTINGS_ROUTING_ALLOCATION_TOTAL_SHARDS_PER_NODE, DataTypes.INTEGER);
 
-        public static final ReferenceInfo TABLE_SETTINGS_RECOVERY = info(
+        public static final Reference TABLE_SETTINGS_RECOVERY = info(
                 Columns.TABLE_SETTINGS_RECOVERY, DataTypes.OBJECT);
-        public static final ReferenceInfo TABLE_SETTINGS_RECOVERY_INITIAL_SHARDS = info(
+        public static final Reference TABLE_SETTINGS_RECOVERY_INITIAL_SHARDS = info(
                 Columns.TABLE_SETTINGS_RECOVERY_INITIAL_SHARDS, DataTypes.STRING);
-        public static final ReferenceInfo TABLE_SETTINGS_WARMER = info(
+        public static final Reference TABLE_SETTINGS_WARMER = info(
                 Columns.TABLE_SETTINGS_WARMER, DataTypes.OBJECT);
-        public static final ReferenceInfo TABLE_SETTINGS_WARMER_ENABLED = info(
+        public static final Reference TABLE_SETTINGS_WARMER_ENABLED = info(
                 Columns.TABLE_SETTINGS_WARMER_ENABLED, DataTypes.BOOLEAN);
 
-        public static final ReferenceInfo TABLE_SETTINGS_TRANSLOG_SYNC_INTERVAL = info(
+        public static final Reference TABLE_SETTINGS_TRANSLOG_SYNC_INTERVAL = info(
                 Columns.TABLE_SETTINGS_TRANSLOG_SYNC_INTERVAL, DataTypes.LONG);
 
-        public static final ReferenceInfo TABLE_SETTINGS_UNASSIGNED = info(
+        public static final Reference TABLE_SETTINGS_UNASSIGNED = info(
                 Columns.TABLE_SETTINGS_UNASSIGNED, DataTypes.OBJECT);
-        public static final ReferenceInfo TABLE_SETTINGS_UNASSIGNED_NODE_LEFT = info(
+        public static final Reference TABLE_SETTINGS_UNASSIGNED_NODE_LEFT = info(
                 Columns.TABLE_SETTINGS_UNASSIGNED_NODE_LEFT, DataTypes.OBJECT);
-        public static final ReferenceInfo TABLE_SETTINGS_UNASSIGNED_NODE_LEFT_DELAYED_TIMEOUT = info(
+        public static final Reference TABLE_SETTINGS_UNASSIGNED_NODE_LEFT_DELAYED_TIMEOUT = info(
                 Columns.TABLE_SETTINGS_UNASSIGNED_NODE_LEFT_DELAYED_TIMEOUT, DataTypes.LONG);
     }
 
-    private static ReferenceInfo info(ColumnIdent columnIdent, DataType dataType) {
-        return new ReferenceInfo(new ReferenceIdent(IDENT, columnIdent), RowGranularity.DOC, dataType);
+    private static Reference info(ColumnIdent columnIdent, DataType dataType) {
+        return new Reference(new ReferenceIdent(IDENT, columnIdent), RowGranularity.DOC, dataType);
     }
 
     public InformationTablesTableInfo(ClusterService clusterService) {
         super(clusterService,
                 IDENT,
                 ImmutableList.of(Columns.SCHEMA_NAME, Columns.TABLE_NAME),
-                ImmutableSortedMap.<ColumnIdent, ReferenceInfo>naturalOrder()
+                ImmutableSortedMap.<ColumnIdent, Reference>naturalOrder()
                    .put(Columns.SCHEMA_NAME, ReferenceInfos.SCHEMA_NAME)
                    .put(Columns.TABLE_NAME, ReferenceInfos.TABLE_NAME)
                    .put(Columns.NUMBER_OF_SHARDS, ReferenceInfos.NUMBER_OF_SHARDS)

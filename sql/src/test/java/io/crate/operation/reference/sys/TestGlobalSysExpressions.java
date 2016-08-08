@@ -70,8 +70,8 @@ public class TestGlobalSysExpressions extends CrateUnitTest {
     private NestedReferenceResolver resolver;
     private Schemas schemas;
 
-    private ReferenceInfo loadInfo;
-    private ReferenceInfo load1Info;
+    private Reference loadInfo;
+    private Reference load1Info;
     private ThreadPool threadPool;
 
 
@@ -149,7 +149,7 @@ public class TestGlobalSysExpressions extends CrateUnitTest {
 
     @Test
     public void testChildImplementationLookup() throws Exception {
-        ReferenceInfo refInfo = refInfo("sys.nodes.load", DataTypes.OBJECT, RowGranularity.NODE);
+        Reference refInfo = refInfo("sys.nodes.load", DataTypes.OBJECT, RowGranularity.NODE);
         NestedObjectExpression load = (NestedObjectExpression) resolver.getImplementation(refInfo);
 
         Input ci = load.getChildImplementation("1");
@@ -161,7 +161,7 @@ public class TestGlobalSysExpressions extends CrateUnitTest {
 
     @Test
     public void testClusterSettings() throws Exception {
-        ReferenceInfo refInfo = refInfo("sys.cluster.settings", DataTypes.OBJECT, RowGranularity.CLUSTER);
+        Reference refInfo = refInfo("sys.cluster.settings", DataTypes.OBJECT, RowGranularity.CLUSTER);
         NestedObjectExpression settingsExpression = (NestedObjectExpression) resolver.getImplementation(refInfo);
 
         Map settings = settingsExpression.value();

@@ -79,7 +79,7 @@ public class ExpressionAnalyzerTest extends CrateUnitTest {
                 mock(ReferenceInfos.class),
                 new NestedReferenceResolver() {
                     @Override
-                    public ReferenceImplementation getImplementation(ReferenceInfo refInfo) {
+                    public ReferenceImplementation getImplementation(Reference refInfo) {
                         return null;
                     }
                 });
@@ -146,7 +146,7 @@ public class ExpressionAnalyzerTest extends CrateUnitTest {
     public void testInSelfJoinCaseFunctionsThatLookTheSameMustNotReuseFunctionAllocation() throws Exception {
         TableInfo tableInfo = mock(TableInfo.class);
         when(tableInfo.getReferenceInfo(new ColumnIdent("id"))).thenReturn(
-                new ReferenceInfo(new ReferenceIdent(new TableIdent("doc", "t"), "id"), RowGranularity.DOC, DataTypes.INTEGER));
+                new Reference(new ReferenceIdent(new TableIdent("doc", "t"), "id"), RowGranularity.DOC, DataTypes.INTEGER));
         TableRelation tr1 = new TableRelation(tableInfo);
         TableRelation tr2 = new TableRelation(tableInfo);
 

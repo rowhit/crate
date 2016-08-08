@@ -23,7 +23,7 @@
 package io.crate.analyze;
 
 import io.crate.metadata.ColumnIdent;
-import io.crate.metadata.ReferenceInfo;
+import io.crate.metadata.Reference;
 import io.crate.metadata.doc.DocTableInfo;
 
 import java.util.Collection;
@@ -31,7 +31,7 @@ import java.util.Locale;
 
 public final class ConstraintsValidator {
 
-    public static void validate(Object value, ReferenceInfo targetColumn) {
+    public static void validate(Object value, Reference targetColumn) {
         // Validate NOT NULL constraint
         if (value == null && !targetColumn.isNullable()) {
             throw new IllegalArgumentException(String.format(Locale.ENGLISH,

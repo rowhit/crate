@@ -42,21 +42,21 @@ public class InformationTableConstraintsTableInfo extends InformationTableInfo {
     }
 
     public static class ReferenceInfos {
-        public static final ReferenceInfo SCHEMA_NAME = info(Columns.SCHEMA_NAME, DataTypes.STRING);
-        public static final ReferenceInfo TABLE_NAME = info(Columns.TABLE_NAME, DataTypes.STRING);
-        public static final ReferenceInfo CONSTRAINT_NAME = info(Columns.CONSTRAINT_NAME, new ArrayType(DataTypes.STRING));
-        public static final ReferenceInfo CONSTRAINT_TYPE = info(Columns.CONSTRAINT_TYPE, DataTypes.STRING);
+        public static final Reference SCHEMA_NAME = info(Columns.SCHEMA_NAME, DataTypes.STRING);
+        public static final Reference TABLE_NAME = info(Columns.TABLE_NAME, DataTypes.STRING);
+        public static final Reference CONSTRAINT_NAME = info(Columns.CONSTRAINT_NAME, new ArrayType(DataTypes.STRING));
+        public static final Reference CONSTRAINT_TYPE = info(Columns.CONSTRAINT_TYPE, DataTypes.STRING);
     }
 
-    private static ReferenceInfo info(ColumnIdent columnIdent, DataType dataType) {
-        return new ReferenceInfo(new ReferenceIdent(IDENT, columnIdent), RowGranularity.DOC, dataType);
+    private static Reference info(ColumnIdent columnIdent, DataType dataType) {
+        return new Reference(new ReferenceIdent(IDENT, columnIdent), RowGranularity.DOC, dataType);
     }
 
     protected InformationTableConstraintsTableInfo(ClusterService clusterService) {
         super(clusterService,
                 IDENT,
                 ImmutableList.<ColumnIdent>of(),
-                ImmutableSortedMap.<ColumnIdent, ReferenceInfo>naturalOrder()
+                ImmutableSortedMap.<ColumnIdent, Reference>naturalOrder()
                     .put(Columns.SCHEMA_NAME, ReferenceInfos.SCHEMA_NAME)
                     .put(Columns.TABLE_NAME, ReferenceInfos.TABLE_NAME)
                     .put(Columns.CONSTRAINT_NAME, ReferenceInfos.CONSTRAINT_NAME)
